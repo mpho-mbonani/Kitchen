@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Kitchen';
-  loadedFeature = 'recipe';
+  loadedFeature!: string; //causes rerouting to home page after ingredient add
 
   onNavigate(feature: string) {
     this.loadedFeature = feature;
