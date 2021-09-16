@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Ingredient } from '../shared/ingredients.model';
+import { Ingredient } from '../models/ingredients.model';
 
 @Component({
   selector: 'app-shopping-list',
