@@ -1,0 +1,179 @@
+<ion-text color="primary">
+  <h1>Registration</h1>
+</ion-text>
+<div class="divider"></div>
+<ion-text color="mediumdark">
+  <h2>Complete the below registration form</h2>
+</ion-text>
+<app-registerbreadcrumb [currentStep]="setBreadCrumb - 1"></app-registerbreadcrumb>
+<div class="formContainer">
+  <form [formGroup]="registrationForm" id="step{{registerStepID}}">
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">First Name <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input id="firstName" type="text" formControlName="firstName" required placeholder="Please enter your first name">
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.firstName">
+          <div class="error-message"
+            *ngIf="registrationForm.get('firstName').hasError(validationtype.type) && (registrationForm.get('firstName').dirty || registrationForm.get('firstName').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">Last Name <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input id="lastName" type="text" formControlName="lastName" placeholder="Please enter your last name"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.lastName">
+          <div class="error-message"
+            *ngIf="registrationForm.get('lastName').hasError(validationtype.type) && (registrationForm.get('lastName').dirty || registrationForm.get('lastName').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">ID Number</ion-label>
+        <ion-input id="idNumber" type="text" maxlength="13" formControlName="idNumber" placeholder="Please enter your ID number"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.idNumber">
+          <div class="error-message"
+            *ngIf="registrationForm.get('idNumber').hasError(validationtype.type) && (registrationForm.get('idNumber').dirty || registrationForm.get('idNumber').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">FSP Number <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input id="fspNumber" type="numeric" maxlength="6" formControlName="fspNumber" placeholder="Please enter FSP number"></ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.fspNumber">
+          <div class="error-message"
+            *ngIf="registrationForm.get('fspNumber').hasError(validationtype.type) && (registrationForm.get('fspNumber').dirty || registrationForm.get('fspNumber').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">Broker Type <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-select id="brokerType" formControlName="brokerType" placeholder="Please select broker type"
+          (ionChange)="ChangeBrokerType($event)">
+          <ion-select-option *ngFor="let brokerType of brokerTypeList" value="{{brokerType.value}}">{{brokerType.label}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.brokerType">
+          <div class="error-message"
+            *ngIf="registrationForm.get('brokerType').hasError(validationtype.type) && (registrationForm.get('brokerType').dirty || registrationForm.get('brokerType').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">Brokerage/Franchise</ion-label>
+        <ion-input id="brokerage" type="text" formControlName="brokerage" placeholder="Please enter brokerage or franchise">
+        </ion-input>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.brokerage">
+          <div class="error-message"
+            *ngIf="registrationForm.get('brokerage').hasError(validationtype.type) && (registrationForm.get('brokerage').dirty || registrationForm.get('brokerage').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <ion-item>
+        <ion-label position="floating" color="primary">Upload Broker Disclosure <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <input type="file" id="fileUpload" accept=".pdf" style="visibility:hidden;" (change)="uploadBrokerDisclosure($event)">
+        <label class="modal-label" for="fileUpload" fill="outline" color="primary">Upload Document</label>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container>
+          <div class="error-message" *ngIf="invalidFile">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationMessage}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem">
+      <app-brokerlogoupload (selectedFile)="setBrokerLogoFile($event)"></app-brokerlogoupload>
+    </div>
+    <div class="formItem">
+      <!-- check business rule for brokerType show single select or multiple-->
+      <ion-item *ngIf="brokerChosenType != 'Tied'">
+        <ion-label position="floating" color="primary">Contracted To <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-select id="contractedTo" multiple="true" cancelText="Cancel" okText="Done" formControlName="contractedTo"
+          placeholder="Please choose who you are contracted to." (ionChange)="ChangeContractedTo($event)">
+          <ion-select-option *ngFor="let contract of contractList" value="{{contract}}">{{contract}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="brokerChosenType == 'Tied'">
+        <!-- check business rule for brokerType show single select or multiple-->
+        <ion-label position="floating" color="primary">Contracted To</ion-label>
+        <ion-select id="contractedToTied" formControlName="contractedTo" placeholder="Please choose who you are contracted to."
+          (ionChange)="ChangeContractedTo($event)">
+          <ion-select-option *ngFor="let contract of contractList" value="{{contract}}">{{contract}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validationtype of validation.validation_messages.contractedTo">
+          <div class="error-message"
+            *ngIf="registrationForm.get('contractedTo').hasError(validationtype.type) && (registrationForm.get('contractedTo').dirty || registrationForm.get('contractedTo').touched)">
+            <ion-icon name="alert"></ion-icon><span class="text">{{validationtype.message}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="formItem" formArrayName="codes">
+      <!-- Codes to go here-->
+      <div *ngFor="let item of registrationForm['controls'].codes['controls']; let i = index" [formGroup]="item"
+        class="formItem">
+        <!-- loop this dude depending on how many -->
+        <ion-item>
+          <ion-label position="floating" color="primary">{{item.value.name}}</ion-label>
+          <ion-input id="code_{{i}}" type="number" placeholder="Please enter code" formControlName="code"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+    <div class="formItem formItemFullBlock">
+      <ion-item> 
+        <ion-label>I Accept <a href="http://www.20twenty.life/terms-and-conditions-of-use" target="_blank">Terms & Conditions</a></ion-label>
+        <ion-toggle  id="termsAndConditions" slot="start" formControlName="acceptTerms"></ion-toggle>
+      </ion-item>
+
+    </div>
+    <br />
+    <br />
+    <ion-row text-right>
+      <ion-col>
+        <ion-button id="nextButton" fill="outline" color="primary" [disabled]="!acceptTerms" (click)="submit()">Next
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</div>
